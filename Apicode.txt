@@ -1,0 +1,10 @@
+public int LogJobStart(IntegrationName integrationName, string sourceName)
+        {
+            PWData.DataSetIntegrationTableAdapters.IntegrationJobLogTableAdapter integrationJobLogTableAdapter = new PWData.DataSetIntegrationTableAdapters.IntegrationJobLogTableAdapter();
+            integrationJobLogTableAdapter.SetConnection(new SqlConnection(DBConnection.GetConnectionString(this.catalog)), null);
+
+            integrationJobLogTableAdapter.Insert(integrationName.ToString(), DateTime.UtcNow, null, IntegrationTableNames.GetTableNames(integrationName), JobLogStatus.Running.ToString(), sourceName, null, 0, 0, 0, null, this.userName, DateTime.UtcNow);
+            int jobId = Convert.ToInt32(integrationJobLogTableAdapter.SelectMaxJobId());
+            this.jobId = jobId;
+            return jobId;
+        }
